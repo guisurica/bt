@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 struct Node {
 	int data;
@@ -16,23 +17,16 @@ struct Node *create_node(int data) {
 	return node;
 }
 
-int print_node(struct Node *pNode) {
-	if (pNode == NULL) {
-		printf("Error: Printing null node\n");
-		printf("TS: Pass a valid node to print\n");
-		return -1;
-	}
-	
-	printf("%d\n", pNode->data);
-
-	return 0;
-}
-
 int main() {
-	struct Node *node = create_node(1);
-	if (print_node(node) == -1) {
-		return -1;
-	}
+	struct Node *root = create_node(1); // 0
+	root->left = create_node(2); // 1
+	root->right = create_node(3); // 1
+
+	root->left->left = create_node(4); // 2
+	root->left->right = create_node(5); // 2
+
+	root->right->left = create_node(6); // 3
+	root->right->right = create_node(7); // 3
 
 
 	return 0;
