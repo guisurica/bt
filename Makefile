@@ -1,5 +1,8 @@
 main: main.c
-	gcc -Wextra -Wall -g -O0 main.c -lm -o main
+	gcc -Wextra -Wall -ggdb -O0 main.c -lm -o main
+
+debug:
+	gdb main
 
 run:
 	./main

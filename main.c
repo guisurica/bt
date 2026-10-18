@@ -48,8 +48,7 @@ struct Node *create_node(int data) {
 
 struct Tree *create_tree(int nodes) {
 	if (nodes <= 0) {
-		// in the future, create an empty tree
-		printf("W: Invalid Nodes, created empty tree\n");
+		printf("W: Invalid Nodes\n");
 		return NULL;
 	}
 
@@ -67,24 +66,68 @@ struct Tree *create_tree(int nodes) {
 
 	for(int x = 0; x < nodes; ++x) {
 		int current_data = data[x];
-		struct Node *current_node = create_node(current_data);
 
+		struct Node *new_node = create_node(current_data);
 		if (x <= 0) {
-			tree->nodes[0] = *current_node;
+			tree->nodes[0] = *new_node;
 		} else {
-			struct Node current = *tree->nodes;
-			
+			int y = 1;
+			struct Node *current_node = &tree->nodes[0];
+			while(y == 1) {
+				if (new_node->data < current_node->data) {
+					if (current_node->left == NULL) {
+						current_node->left = new_node;
+						if (x >= 2) {
+							tree->nodes[x - 1] = *current_node;
+						}
+						y = 0;
+					} else {
+						current_node = current_node->left;
+					}
+				} else if (new_node->data > current_node->data) {
+					if (current_node->right == NULL) {
+						current_node->right = new_node;
+						if (x >= 2) {
+							tree->nodes[x - 1] = *current_node;
+						}
+						y = 0;
+					} else {
+						current_node = current_node->right;
+					}
+				}
+
+			}
+
+			tree->nodes[x] = *new_node;
 		}
 	}
 
-	show_all_data(data, nodes);
-
-	return NULL;
+	return tree;
 }
 
 int main() {
 
-	create_tree(8);
+	int nodes;
+	printf("Enter the numbers of nodes: \n");
+	int input = scanf("%d", &nodes);
+
+	if (input == EOF) {
+		printf("Invalid input\n");
+		return -1;
+	}
+
+	struct Tree *tree = create_tree(nodes);
+	
+	printf("Depth: %.0f\n", tree->depth);
+	printf("Nodes: %d\n", tree->count_nodes);
+
+	for(int x = 0; x < nodes; ++x) {
+		printf("Node data -> %d\n", tree->nodes[x].data);
+		printf("Node left -> %p\n", tree->nodes[x].left);
+		printf("Node right -> %p\n", tree->nodes[x].right);
+		
+		printf("=======================================\n");
+	}
 
 	return 0;
 }
