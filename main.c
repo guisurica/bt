@@ -63,11 +63,11 @@ struct Tree *create_tree(int nodes) {
 	
 	tree->depth = get_depth(nodes);
 	tree->count_nodes = nodes;
-
+	
 	for(int x = 0; x < nodes; ++x) {
 		int current_data = data[x];
-
 		struct Node *new_node = create_node(current_data);
+
 		if (x <= 0) {
 			tree->nodes[0] = *new_node;
 		} else {
@@ -102,19 +102,21 @@ struct Tree *create_tree(int nodes) {
 		}
 	}
 
+	free(data);
+
 	return tree;
 }
 
 int main() {
-
 	int nodes;
+	char buf[1024];
 	printf("Enter the numbers of nodes: \n");
-	int input = scanf("%d", &nodes);
-
-	if (input == EOF) {
-		printf("Invalid input\n");
+	if (!fgets(buf, 1024, stdin)) {
+		printf("Invalid nodes");
 		return -1;
 	}
+
+	nodes = atoi(buf);
 
 	struct Tree *tree = create_tree(nodes);
 	
@@ -128,6 +130,9 @@ int main() {
 		
 		printf("=======================================\n");
 	}
+
+	free(tree->nodes);
+	free(tree);
 
 	return 0;
 }

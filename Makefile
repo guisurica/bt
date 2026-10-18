@@ -4,5 +4,8 @@ main: main.c
 debug:
 	gdb main
 
+memcheck:
+	valgrind --show-leak-kinds=all --leak-check=full ./main
+
 run:
 	./main
